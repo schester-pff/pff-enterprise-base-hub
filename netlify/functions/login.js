@@ -2,8 +2,10 @@
 // Base Hub login — reads the Login tab of the Base Hub sheet via the Google Sheets API
 // and returns the trainee's name + week-access number.
 //
-// Built for THIS sheet's columns:
-//   A Email | B First Name | C Last Name | D Active | E WeekAccess ("Week 0".."Week 4")
+// Mirrors the proven V1 Coach function pattern (same CORS headers, same Sheets API
+// read via SHEETS_API_KEY). Built for THIS sheet's columns:
+//   A Email | B First Name | C Last Name | D Active | E WeekAccess
+//   E values: "Week 0", "Week 0+", "Week 1", "Week 2", "Week 3", "Week 4", "Week 5"
 //
 // Requires Netlify environment variable: SHEETS_API_KEY
 
@@ -30,11 +32,18 @@ async function fetchLoginTab(apiKey) {
   return cachedRows;
 }
 
+// Map the dropdown values in the Login sheet's WeekAccess column to numeric state codes.
+//   "Week 0"   -> 0     (PFFU)
+//   "Week 0+"  -> 0.5   (post-PFFU practice game)
+//   "Week 1"   -> 1     (Game 1)
+//   "Week 2"   -> 2     (Game 2)
+//   "Week 3"   -> 3     (Game 3)
+//   "Week 4"   -> 4     (Game 4 / final test)
+//   "Week 5"   -> 5     (Passed — Result page unlocked, full $150 earned)
+// Anything unrecognised falls back to 0 so the trainee lands on the PFFU page.
 function parseWeek(raw) {
-  // Login sheet dropdown values: "Week 0", "Week 0+", "Week 1", "Week 2", "Week 3", "Week 4", "Week 5"
-  // Returned states: 0, 0.5 (Practice), 1, 2, 3, 4, 5 (Passed). Default: 0.
-  const s = String(raw == null ? '' : raw).trim().toLowerCase();
-  switch (s) {
+  const v = String(raw == null ? '' : raw).trim().toLowerCase();
+  switch (v) {
     case 'week 0':  return 0;
     case 'week 0+': return 0.5;
     case 'week 1':  return 1;
