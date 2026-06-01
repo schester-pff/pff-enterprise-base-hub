@@ -31,9 +31,19 @@ async function fetchLoginTab(apiKey) {
 }
 
 function parseWeek(raw) {
-  const m = String(raw == null ? '' : raw).match(/(\d+)/);
-  const n = m ? parseInt(m[1], 10) : 0;
-  return (n >= 0 && n <= 4) ? n : 0;
+  // Login sheet dropdown values: "Week 0", "Week 0+", "Week 1", "Week 2", "Week 3", "Week 4", "Week 5"
+  // Returned states: 0, 0.5 (Practice), 1, 2, 3, 4, 5 (Passed). Default: 0.
+  const s = String(raw == null ? '' : raw).trim().toLowerCase();
+  switch (s) {
+    case 'week 0':  return 0;
+    case 'week 0+': return 0.5;
+    case 'week 1':  return 1;
+    case 'week 2':  return 2;
+    case 'week 3':  return 3;
+    case 'week 4':  return 4;
+    case 'week 5':  return 5;
+    default:        return 0;
+  }
 }
 
 exports.handler = async function (event) {
