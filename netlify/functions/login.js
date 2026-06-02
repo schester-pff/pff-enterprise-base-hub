@@ -34,7 +34,6 @@ async function fetchLoginTab(apiKey) {
 
 // Map the dropdown values in the Login sheet's WeekAccess column to numeric state codes.
 //   "Week 0"   -> 0     (PFFU)
-//   "Week 0+"  -> 0.5   (post-PFFU practice game)
 //   "Week 1"   -> 1     (Game 1)
 //   "Week 2"   -> 2     (Game 2)
 //   "Week 3"   -> 3     (Game 3)
@@ -45,7 +44,6 @@ function parseWeek(raw) {
   const v = String(raw == null ? '' : raw).trim().toLowerCase();
   switch (v) {
     case 'week 0':  return 0;
-    case 'week 0+': return 0.5;
     case 'week 1':  return 1;
     case 'week 2':  return 2;
     case 'week 3':  return 3;
