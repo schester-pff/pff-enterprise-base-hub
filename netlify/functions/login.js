@@ -5,7 +5,7 @@
 // Mirrors the proven V1 Coach function pattern (same CORS headers, same Sheets API
 // read via SHEETS_API_KEY). Built for THIS sheet's columns:
 //   A Email | B First Name | C Last Name | D Active | E WeekAccess
-//   E values: "Week 0", "Week 0+", "Week 1", "Week 2", "Week 3", "Week 4", "Week 5"
+//   E values: "Week 0", "Week 1", "Week 2", "Week 3", "Week 4", "Week 5"
 //
 // Requires Netlify environment variable: SHEETS_API_KEY
 
